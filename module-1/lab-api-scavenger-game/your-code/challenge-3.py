@@ -19,7 +19,7 @@ def authRequest(url, params={}):
 
 listofscavenger = []
 frase = []
-
+print("Empieza solución Maury: \n")
 scavenger = authRequest("https://api.github.com/repos/ironhack-datalabs/scavenger/contents")
 scavenger_list = [h["name"] for h in scavenger if h["name"] != ".gitignore"]
 for name in scavenger_list:
@@ -36,3 +36,14 @@ for element in sorted(listofscavenger):
     frase.append(word)
 
 print(" ".join(frase))
+
+
+#solución de marc
+print("\nEmpieza solución Marc: \n")
+data = authRequest("https://api.github.com/search/code?q=extension:.scavengerhunt repo:ironhack-datalabs/scavenger")
+files = [(item["name"],item["path"]) for item in data["items"]]
+formated = [(item[0],"https://raw.githubusercontent.com/ironhack-datalabs/scavenger/master/{}".format(item[1])) for item in files]
+urls = [e[1] for e in sorted(formated, key = lambda e: e[0])]
+fraseList = [requests.get(url).text for url in urls]
+frasemarc = ' '.join(fraseList).replace('\n',"")
+print(frasemarc)
